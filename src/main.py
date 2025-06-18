@@ -51,7 +51,7 @@ def main():
     if COLUNA_STATUS not in planilha.columns:
         planilha[COLUNA_STATUS] = False
 
-    planilha[COLUNA_STATUS] = planilha[COLUNA_STATUS].astype(bool)
+    planilha[COLUNA_STATUS] = planilha[COLUNA_STATUS].fillna(False).astype(bool)
 
     # Processa apenas fiscalizações sem relatório
     pendentes = planilha[~planilha[COLUNA_STATUS]]
