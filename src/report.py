@@ -4,12 +4,10 @@ from docx.shared import Inches
 import pandas as pd
 from docx2pdf import convert
 from tqdm import tqdm
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.section import WD_SECTION
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sys
 import os
-from openpyxl import load_workbook
 from sections.introduction.introduction import gerar_secao_introducao
 from sections.legalbasis.legalbasis import gerar_secao_fundamentacao_legal
 from sections.nonconformity.nonconformity import (
@@ -21,12 +19,8 @@ from sections.nonconformityresume.nonconformityresume import (
 from sections.finalconsiderations.finalconsiderations import (
     gerar_secao_consideracoes_finais,
 )
-
-## from sections.relatorio_formatado.relatorio_formatado import gerar_secao_nao_conformidades_constatadas
 from utils import (
-    adicionar_paragrafo_justificado,
     adicionar_texto_centralizado,
-    adicionar_titulo_secao,
     ajustar_largura_colunas,
     arquivo_em_uso,
 )

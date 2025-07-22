@@ -5,6 +5,8 @@ import os
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
+from PIL import Image
+import io
 
 
 # Funções auxiliares de formatação:
@@ -101,3 +103,21 @@ def adicionar_legenda_formatada(doc, texto):
     aplicar_estilo_texto(run, tamanho=10, fonte="Arial", cor_rgb=(90, 90, 90))
     par.alignment = WD_ALIGN_PARAGRAPH.CENTER
     aplicar_borda_paragrafo(par)
+
+
+def processar_imagem_para_relatorio(caminho_imagem, largura_max=1024, qualidade=80):
+    # Abre a imagem
+    img = Image.open(caminho_imagem)
+    # Converte para RGB se necessário (evita problemas com PNG/transparência)
+    if img.mode != "RGB":
+        img = img.convert("RGB")
+    # Redimensiona mantendo proporção
+    if img.width > largura_max:
+        proporcao = largura_max / float(img.width)
+        altura_nova = int(float(img.height) * proporcao)
+        img = img.resize((largura_max, altura_nova), Image.LANCZOS)
+    # Salva em memória, sem metadados, com compressão JPEG
+    buffer = io.BytesIO()
+    img.save(buffer, format="JPEG", quality=qualidade, optimize=True)
+    buffer.seek(0)
+    return buffer
