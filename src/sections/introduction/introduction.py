@@ -1,13 +1,10 @@
 from docx import Document
-from docx.enum.section import WD_SECTION
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from utils import (
-    adicionar_paragrafo_justificado,
-    adicionar_titulo_secao,
-)
+from utils import *
+import os
 
 
-def gerar_secao_introducao(doc: Document, row):
+def gerar_secao_introducao(doc: Document, row, BASE_DIR):
     """
     Gera a seção '1. INTRODUÇÃO' do relatório com base nos dados da PLANILHA DE FISCALIZAÇÕES.
 
@@ -15,25 +12,61 @@ def gerar_secao_introducao(doc: Document, row):
     - doc: objeto Document do python-docx.
     - row: linha da planilha contendo os dados da fiscalização.
     """
+    
+    #ABREVIATURAS E SIGLAS
+    adicionar_paragrafo(doc, "LISTA DE ABREVIATURAS E SIGLAS", tamanho_fonte=13, alinhamento=WD_ALIGN_PARAGRAPH.CENTER,cor=(0,0,0), bold=True, estilo='Heading 3', espaco_depois=6, espaco_antes=12)
+    
+    dados_produto = [
+    ('Sigla', 'Definição'),
+    ('CRM', 'Conjunto de Regulagem de Pressão e Medição'),
+    ('ERP', 'Estação de Regulagem de Pressão'),
+    ('ERPM', 'Estação de Regulagem, Pressão e Medição'),
+    ('ETC','Estação de Transferência de Custódia'),
+    ('GNV','Gás Natural Veicular')
+    ]
 
-    adicionar_titulo_secao(doc, "1. INTRODUÇÃO")
+    larguras_produto = [1, 4]
+    alinhamentos_produto = [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.CENTER]
 
-    par = doc.add_paragraph()
-    par.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    par.add_run(
-        "A Coordenadoria de Transportes e Rodovias da Arpe realizou vistoria nos Terminais Rodoviários Intermunicipais concedidos com o objetivo de verificar as condições operacionais, de conservação, de manutenção e de segurança dos referidos terminais, conforme Contrato de Serviço Público Nº "
-    )
-    par.add_run(str(row["Contrato"])).bold = True
-    par.add_run(
-        ", firmado entre o Governo do Estado, representado pela Secretaria de Transportes (SETRA) e a SOCICAM - Administração, Projetos e Representações Ltda. A ação foi no dia "
-    )
-    par.add_run(str(row["Data"])).bold = True
-    par.add_run(", exclusivamente no Terminal de ")
-    par.add_run(str(row["Local"])).bold = True
-    par.add_run(
-        " e nos dias 24 a 28 de março de 2025, nas cidades de Caruaru, Garanhuns, Arcoverde, Serra Talhada e Petrolina. As visitas técnicas foram realizadas pela equipe formada por "
-    )
-    par.add_run(str(row["Pessoal Responsável"])).bold = True
-    par.add_run(
-        ".\n\nNeste Relatório de Fiscalização foram observadas as condições de conservação, limpeza e higiene das áreas de embarque e desembarque, dos sanitários, as condições do pavimento das vias de circulação interna, a infraestrutura oferecida, os locais de estocagem de veículos, a segurança e o atendimento ao usuário, bem como toda estrutura para funcionamento dos terminais. A equipe da Arpe conversou com os responsáveis pelos seis terminais que forneceram informações complementares à fiscalização, principalmente sobre a implantação dos sistemas contra incêndio."
-    )
+    adicionar_tabela(doc, 
+                    dados=dados_produto, 
+                    largura_colunas=larguras_produto,
+                    alinhamento_colunas=alinhamentos_produto
+                    )
+            
+            
+    # Adiciona o título "SUMÁRIO"
+    adicionar_paragrafo(doc, "SUMÁRIO", tamanho_fonte=14, alinhamento=WD_ALIGN_PARAGRAPH.CENTER, bold=True)
+    
+    # Adiciona os itens principais
+    adicionar_paragrafo(doc, "1. INTRODUÇÃO", estilo='Heading 1')
+    adicionar_paragrafo(doc, "2. OBJETIVOS", estilo='Heading 1')
+    adicionar_paragrafo(doc, "3. METODOLOGIA", estilo='Heading 1')
+    adicionar_paragrafo(doc, "4. FISCALIZAÇÃO", estilo='Heading 1')
+    
+    # Adiciona os subitens com indentação
+    # Para indentar, você precisa definir um estilo de parágrafo diferente ou
+    # ajustar a indentação do parágrafo após criá-lo.
+    
+    p_4_1 = adicionar_paragrafo(doc, "4.1 Preparação e Planejamento", estilo='Heading 2')
+    p_4_2 = adicionar_paragrafo(doc, "4.2 Execução da Fiscalização", estilo='Heading 2')
+    p_4_3 = adicionar_paragrafo(doc, "4.3 Monitoramento e Avaliação", estilo='Heading 2')
+    
+    # Adiciona os itens finais
+    adicionar_paragrafo(doc, "5. DETERMINAÇÕES GERAIS", estilo='Heading 1')
+    adicionar_paragrafo(doc, "APÊNDICE 1 - FOTOS DAS NÃO CONFORMIDADES", estilo='Heading 1')
+    adicionar_paragrafo(doc, "APÊNDICE 2 - ANÁLISE DAS FISCALIZAÇÕES", estilo='Heading 1')
+    
+    # SUMÁRIO
+    adicionar_paragrafo(doc, "SUMÁRIO", tamanho_fonte=14, alinhamento=WD_ALIGN_PARAGRAPH.CENTER, bold=True, estilo='Heading 3', espaco_antes=25, espaco_depois=6, cor=(0,0,0))
+    adicionar_paragrafo(doc, "1. INTRODUÇÃO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "2. OBJETIVOS", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "3. METODOLOGIA", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "4. FISCALIZAÇÃO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "   4.1. PREPARAÇÃO E PLANEJAMENTO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "   4.2. EXECUÇÃO DA FISCALIZAÇÃO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "   4.3. MONITORAMENTO E AVALIAÇÃO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "5. DETERMINAÇÕES GERAIS", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "APÊNDICE 1 - FOTOS DAS NÃO CONFORMIDADES", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    adicionar_paragrafo(doc, "APÊNDICE 2 - ANÁLISE DAS FISCALIZAÇÕES", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)
+    

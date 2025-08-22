@@ -1,5 +1,5 @@
 from docx import Document
-from utils import adicionar_titulo_secao, adicionar_paragrafo_justificado
+from utils import adicionar_titulo_secao, adicionar_paragrafo
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 

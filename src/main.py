@@ -10,3 +10,4 @@ if __name__ == "__main__":
         main()
     finally:
         input("\nExecução finalizada. Pressione Enter para sair...")
+

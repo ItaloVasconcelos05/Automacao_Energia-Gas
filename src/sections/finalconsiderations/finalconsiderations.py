@@ -1,7 +1,7 @@
 from utils import (
     adicionar_titulo_secao,
-    adicionar_paragrafo_justificado,
-    adicionar_texto_centralizado,
+    adicionar_paragrafo,
+    adicionar_paragrafo,
 )
 
 
@@ -23,26 +23,26 @@ def gerar_secao_consideracoes_finais(doc, row):
 
     texto4 = "Por fim, indicamos o encaminhamento deste Relatório de Fiscalização para conhecimento da EPTI, na qualidade de Poder Concedente do Contrato de Concessão e gestora do Sistema de Transporte Coletivo Intermunicipal de Passageiros (STCIP-PE)."
 
-    adicionar_paragrafo_justificado(doc, texto1)
-    adicionar_paragrafo_justificado(doc, texto2)
-    adicionar_paragrafo_justificado(doc, texto3)
-    adicionar_paragrafo_justificado(doc, texto4)
+    adicionar_paragrafo(doc, texto1)
+    adicionar_paragrafo(doc, texto2)
+    adicionar_paragrafo(doc, texto3)
+    adicionar_paragrafo(doc, texto4)
 
-    adicionar_texto_centralizado(doc, f"\n\nRecife, {row['Data']}.")
-    adicionar_texto_centralizado(doc, "\n\n")
+    adicionar_paragrafo(doc, f"\n\nRecife, {row['Data']}.")
+    adicionar_paragrafo(doc, "\n\n")
 
     # Assinaturas dos responsáveis (pode ser uma string separada por ";" ou ",")
     assinantes = str(row.get("Assinatura", "")).split(";")
     for assinante in assinantes:
         nome = assinante.strip()
         if nome:
-            adicionar_texto_centralizado(doc, "_______________________")
-            adicionar_texto_centralizado(doc, nome)
-            adicionar_texto_centralizado(doc, "Analista de Regulação")
-            adicionar_texto_centralizado(doc, "")  # Espaço em branco entre assinaturas
+            adicionar_paragrafo(doc, "_______________________")
+            adicionar_paragrafo(doc, nome)
+            adicionar_paragrafo(doc, "Analista de Regulação")
+            adicionar_paragrafo(doc, "")  # Espaço em branco entre assinaturas
 
-    adicionar_texto_centralizado(doc, "\nCiente e de acordo:\n")
+    adicionar_paragrafo(doc, "\nCiente e de acordo:\n")
     coordenador = str(row.get("Coordenador", "")).strip()
     if coordenador:
-        adicionar_texto_centralizado(doc, "_______________________")
-        adicionar_texto_centralizado(doc, coordenador)
+        adicionar_paragrafo(doc, "_______________________")
+        adicionar_paragrafo(doc, coordenador)

@@ -10,22 +10,13 @@ import sys
 import os
 from sections.introduction.introduction import gerar_secao_introducao
 from sections.legalbasis.legalbasis import gerar_secao_fundamentacao_legal
-from sections.nonconformity.nonconformity import (
-    gerar_secao_nao_conformidades_constatadas,
-)
-from sections.nonconformityresume.nonconformityresume import (
-    gerar_secao_resumo_nao_conformidades,
-)
-from sections.finalconsiderations.finalconsiderations import (
-    gerar_secao_consideracoes_finais,
-)
-from utils import (
-    adicionar_texto_centralizado,
-    ajustar_largura_colunas,
-    arquivo_em_uso,
-)
+from sections.nonconformity.nonconformity import (gerar_secao_nao_conformidades_constatadas,)
+from sections.nonconformityresume.nonconformityresume import (gerar_secao_resumo_nao_conformidades,)
+from sections.finalconsiderations.finalconsiderations import (gerar_secao_consideracoes_finais,)
+from sections.tittle.tittle import gerar_titulo
+from utils import (adicionar_paragrafo,ajustar_largura_colunas,arquivo_em_uso,)
 
-
+Inches
 def gerar_relatorio():
     """
     Gera o relatório completo (docx + pdf) com base nos dados da fiscalização.
@@ -78,26 +69,12 @@ def gerar_relatorio():
     for idx in tqdm(pendentes.index, desc="Gerando relatórios"):
         row = fiscalizacoes_df.loc[idx]
         id_fisc = row["ID da Fiscalização"]
+        # fiscalizacoes_df.at[idx, COLUNA_STATUS] = True  # Comentado para manter o status como False após gerar o relatório
         doc = Document()
-
-        doc.add_picture(os.path.join(BASE_DIR, "assets/logo_arpe.png"), width=Inches(2))
-        logo_arpe = doc.paragraphs[-1]
-        logo_arpe.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-        adicionar_texto_centralizado(doc, "DIRETORIA DE REGULAÇÃO TÉCNICO-OPERACIONAL")
-        adicionar_texto_centralizado(doc, "COORDENADORIA DE TRANSPORTES E RODOVIAS")
-        adicionar_texto_centralizado(
-            doc, "RELATÓRIO DE FISCALIZAÇÃO TÉCNICO-OPERACIONAL CTR 01/2025"
-        )
-        adicionar_texto_centralizado(
-            doc, "TERMINAIS RODOVIÁRIOS INTERMUNICIPAIS CONCEDIDOS À EMPRESA SOCICAM"
-        )
-        adicionar_texto_centralizado(
-            doc, "CONTRATO DE CONCESSÃO DE SERVIÇO PÚBLICO Nº 1.041.080/08"
-        )
-
+        gerar_titulo(doc, BASE_DIR)
         doc.add_section(WD_SECTION.NEW_PAGE)
 
-        gerar_secao_introducao(doc, row)
+        gerar_secao_introducao(doc, row, BASE_DIR)
         gerar_secao_fundamentacao_legal(doc)
         gerar_secao_nao_conformidades_constatadas(
             doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df
@@ -111,7 +88,7 @@ def gerar_relatorio():
 
         doc.save(caminho_docx)
         convert(caminho_docx, caminho_pdf)
-        fiscalizacoes_df.at[idx, COLUNA_STATUS] = True
+        # fiscalizacoes_df.at[idx, COLUNA_STATUS] = True
 
     if not arquivo_em_uso(CAMINHO_PLANILHA):
         with pd.ExcelWriter(

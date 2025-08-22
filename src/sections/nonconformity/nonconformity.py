@@ -4,7 +4,7 @@ from docx.enum.section import WD_SECTION
 import os
 import pandas as pd
 from utils import (
-    adicionar_paragrafo_justificado,
+    adicionar_paragrafo,
     adicionar_titulo_secao,
     aplicar_borda_paragrafo,
     adicionar_legenda_formatada,
@@ -22,7 +22,7 @@ def gerar_secao_nao_conformidades_constatadas(
 
     adicionar_titulo_secao(doc, "3. NÃO CONFORMIDADES CONSTATADAS")
 
-    adicionar_paragrafo_justificado(
+    adicionar_paragrafo(
         doc,
         "A seguir, apresentam-se as não conformidades registradas nos diversos terminais fiscalizados:",
     )
@@ -34,7 +34,7 @@ def gerar_secao_nao_conformidades_constatadas(
     ]
 
     if "Terminal" not in nc_fisc.columns:
-        adicionar_paragrafo_justificado(
+        adicionar_paragrafo(
             doc, "⚠️ Coluna 'Terminal' não encontrada na planilha de não conformidades."
         )
         return
@@ -81,7 +81,7 @@ def gerar_secao_nao_conformidades_constatadas(
                         adicionar_legenda_formatada(doc, legenda)
                     else:
                         if legenda:
-                            adicionar_paragrafo_justificado(doc, legenda)
+                            adicionar_paragrafo(doc, legenda)
 
         # 🔽 OBSERVAÇÕES IMPORTANTES PARA O TERMINAL
         obs_terminais = observacoes_df[
@@ -117,7 +117,7 @@ def gerar_secao_nao_conformidades_constatadas(
                 )
 
                 if texto_obs:
-                    adicionar_paragrafo_justificado(doc, texto_obs)
+                    adicionar_paragrafo(doc, texto_obs)
 
                 for idx, foto_obs in enumerate(nomes_fotos_obs):
                     foto_path = os.path.join(fotos_dir, foto_obs)
