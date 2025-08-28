@@ -1,6 +1,7 @@
 from docx import Document
 from utils import adicionar_titulo_secao, adicionar_paragrafo
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
 
 
 def gerar_secao_fundamentacao_legal(doc: Document):
@@ -75,18 +76,31 @@ def gerar_secao_fundamentacao_legal(doc: Document):
 
     par = doc.add_paragraph()
     par.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    par.add_run("Art. 3º")
-    par.add_run(
-        " Compete à ARPE a regulação de todos os serviços públicos delegados pelo Estado de Pernambuco, ou por ele diretamente prestados, embora sujeitos à delegação, quer de sua competência ou a ele delegados por outros entes federados, em decorrência de norma legal ou regulamentar, disposição convenial ou contratual.\n")
-    par.add_run("§ 1º A atividade reguladora da ARPE deverá ser exercida, em especial, nas seguintes áreas:\n")
-    par.add_run("(...);\n")
-    par.add_run("II - energia elétrica;").bold = True
-    par.add_run("(...);\n")
-    par.add_run("VI - distribuição de gás canalizado;").bold = True
-    par.add_run("(...);\n")
-    par.add_run("Art. 4º Compete ainda à Arpe:")
-    par.add_run("(...);\n")
-    par.add_run("X - fiscalizar diretamente ou mediante convênio com o Estado de Pernambuco, através de seus órgãos ou entidades vinculadas, com sua supervisão, os aspectos técnico, econômico, contábil, financeiro, operacional e jurídico dos serviços públicos delegados, valendo-se inclusive, de indicadores e procedimentos amostrais.;\n")
+    run = par.add_run("Art. 3º")
+    run.font.size = Pt(8)
+    run = par.add_run(
+        " Compete à ARPE a regulação de todos os serviços públicos delegados pelo Estado de Pernambuco, ou por ele diretamente prestados, embora sujeitos à delegação, quer de sua competência ou a ele delegados por outros entes federados, em decorrência de norma legal ou regulamentar, disposição convenial ou contratual.\n\n")
+    run.font.size = Pt(8)
+    run = par.add_run("§ 1º A atividade reguladora da ARPE deverá ser exercida, em especial, nas seguintes áreas:\n")
+    run.font.size = Pt(8)
+    run = par.add_run("(...);\n")
+    run.font.size = Pt(8)
+    run = par.add_run("II - energia elétrica;")
+    run.bold = True
+    run.font.size = Pt(8)
+    run = par.add_run("(...);\n")
+    run.font.size = Pt(8)
+    run = par.add_run("VI - distribuição de gás canalizado;")
+    run.bold = True
+    run.font.size = Pt(8)
+    run = par.add_run("(...);\n")
+    run.font.size = Pt(8)
+    run = par.add_run("Art. 4º Compete ainda à Arpe:")
+    run.font.size = Pt(8)
+    run = par.add_run("(...);\n")
+    run.font.size = Pt(8)
+    run = par.add_run("X - fiscalizar diretamente ou mediante convênio com o Estado de Pernambuco, através de seus órgãos ou entidades vinculadas, com sua supervisão, os aspectos técnico, econômico, contábil, financeiro, operacional e jurídico dos serviços públicos delegados, valendo-se inclusive, de indicadores e procedimentos amostrais.;\n")
+    run.font.size = Pt(8)
     
 
 
@@ -109,8 +123,10 @@ def gerar_secao_fundamentacao_legal(doc: Document):
     par.add_run(
         " , que dispõe sobre os procedimentos de fiscalização, autuação e aplicação de penalidades aos prestadores de serviços públicos delegados no Estado de Pernambuco e aos serviços públicos fiscalizados pela Arpe mediante delegação:\n\n"
     )
-    par.add_run("Art. 1º. Regulamentar os procedimentos de fiscalização, autuação e aplicação de penalidades aos prestadores de serviços públicos delegados no Estado de Pernambuco.\n")
-    par.add_run("(...);\n")
+    run = par.add_run("Art. 1º. Regulamentar os procedimentos de fiscalização, autuação e aplicação de penalidades aos prestadores de serviços públicos delegados no Estado de Pernambuco.\n")
+    run.font.size = Pt(8)
+    run = par.add_run("(...);\n")
+    run.font.size = Pt(8)
     
     par.add_run("- ")
     par.add_run(
