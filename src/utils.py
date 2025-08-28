@@ -1,3 +1,20 @@
+# Adiciona importação necessária para WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+# Função para adicionar parágrafo com marcador, título em negrito e texto normal
+def adicionar_paragrafo_bullet_bold(doc, titulo, texto, tamanho_fonte=12, font_name='Calibri', alinhamento=WD_ALIGN_PARAGRAPH.JUSTIFY, espaco_antes=0, espaco_depois=0):
+    paragraph = doc.add_paragraph(style='List Bullet')
+    run_titulo = paragraph.add_run(titulo)
+    run_titulo.bold = True
+    run_titulo.font.size = Pt(tamanho_fonte)
+    run_titulo.font.name = font_name
+    run_texto = paragraph.add_run(f" {texto}")
+    run_texto.bold = False
+    run_texto.font.size = Pt(tamanho_fonte)
+    run_texto.font.name = font_name
+    paragraph.alignment = alinhamento
+    paragraph.paragraph_format.space_before = Pt(espaco_antes)
+    paragraph.paragraph_format.space_after = Pt(espaco_depois)
+    return paragraph
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ALIGN_VERTICAL
