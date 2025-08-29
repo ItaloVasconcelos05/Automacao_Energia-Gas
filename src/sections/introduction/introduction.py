@@ -38,25 +38,6 @@ def gerar_secao_introducao(doc: Document, row, BASE_DIR):
     # Adiciona o título "SUMÁRIO"
     adicionar_paragrafo(doc, "SUMÁRIO", tamanho_fonte=14, alinhamento=WD_ALIGN_PARAGRAPH.CENTER, bold=True)
     
-    # Adiciona os itens principais
-    adicionar_paragrafo(doc, "1. INTRODUÇÃO", estilo='Heading 1')
-    adicionar_paragrafo(doc, "2. OBJETIVOS", estilo='Heading 1')
-    adicionar_paragrafo(doc, "3. METODOLOGIA", estilo='Heading 1')
-    adicionar_paragrafo(doc, "4. FISCALIZAÇÃO", estilo='Heading 1')
-    
-    # Adiciona os subitens com indentação
-    # Para indentar, você precisa definir um estilo de parágrafo diferente ou
-    # ajustar a indentação do parágrafo após criá-lo.
-    
-    p_4_1 = adicionar_paragrafo(doc, "4.1 Preparação e Planejamento", estilo='Heading 2')
-    p_4_2 = adicionar_paragrafo(doc, "4.2 Execução da Fiscalização", estilo='Heading 2')
-    p_4_3 = adicionar_paragrafo(doc, "4.3 Monitoramento e Avaliação", estilo='Heading 2')
-    
-    # Adiciona os itens finais
-    adicionar_paragrafo(doc, "5. DETERMINAÇÕES GERAIS", estilo='Heading 1')
-    adicionar_paragrafo(doc, "APÊNDICE 1 - FOTOS DAS NÃO CONFORMIDADES", estilo='Heading 1')
-    adicionar_paragrafo(doc, "APÊNDICE 2 - ANÁLISE DAS FISCALIZAÇÕES", estilo='Heading 1')
-    
     # SUMÁRIO
     adicionar_paragrafo(doc, "SUMÁRIO", tamanho_fonte=14, alinhamento=WD_ALIGN_PARAGRAPH.CENTER, bold=True, estilo='Heading 3', espaco_antes=25, espaco_depois=6, cor=(0,0,0))
     adicionar_paragrafo(doc, "1. INTRODUÇÃO", tamanho_fonte=12, alinhamento=WD_ALIGN_PARAGRAPH.LEFT)

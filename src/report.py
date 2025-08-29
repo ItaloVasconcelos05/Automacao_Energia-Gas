@@ -18,15 +18,6 @@ from utils import (adicionar_paragrafo,ajustar_largura_colunas,arquivo_em_uso,)
 
 Inches
 def gerar_relatorio():
-    """
-    Gera o relatório completo (docx + pdf) com base nos dados da fiscalização.
-
-    Parâmetros:
-    - row: linha da planilha (Series).
-    - nao_conformidades_df: DataFrame da aba 'Não-conformidades'.
-    - fotos_dir: pasta com as imagens.
-    - pasta_saida: onde salvar o .docx e .pdf.
-    """
 
     if getattr(sys, "frozen", False):
         BASE_DIR = os.path.dirname(sys.executable)
@@ -75,11 +66,13 @@ def gerar_relatorio():
         doc.add_section(WD_SECTION.NEW_PAGE)
 
         gerar_secao_introducao(doc, row, BASE_DIR)
+        
         gerar_secao_fundamentacao_legal(doc)
-        gerar_secao_nao_conformidades_constatadas(
-            doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df
-        )
+        
+        gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
+        
         gerar_secao_resumo_nao_conformidades(doc, row, nao_conformidades_df)
+        
         gerar_secao_consideracoes_finais(doc, row)
 
         nome_arquivo = f"relatorio_{id_fisc}"
