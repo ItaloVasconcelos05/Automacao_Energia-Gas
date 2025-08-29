@@ -1,3 +1,20 @@
+# Adiciona importação necessária para WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+# Função para adicionar parágrafo com marcador, título em negrito e texto normal
+def adicionar_paragrafo_bullet_bold(doc, titulo, texto, tamanho_fonte=12, font_name='Calibri', alinhamento=WD_ALIGN_PARAGRAPH.JUSTIFY, espaco_antes=0, espaco_depois=0):
+    paragraph = doc.add_paragraph(style='List Bullet')
+    run_titulo = paragraph.add_run(titulo)
+    run_titulo.bold = True
+    run_titulo.font.size = Pt(tamanho_fonte)
+    run_titulo.font.name = font_name
+    run_texto = paragraph.add_run(f" {texto}")
+    run_texto.bold = False
+    run_texto.font.size = Pt(tamanho_fonte)
+    run_texto.font.name = font_name
+    paragraph.alignment = alinhamento
+    paragraph.paragraph_format.space_before = Pt(espaco_antes)
+    paragraph.paragraph_format.space_after = Pt(espaco_depois)
+    return paragraph
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ALIGN_VERTICAL
@@ -38,16 +55,39 @@ def adicionar_paragrafo(doc, texto,
         cor (tuple of int, optional): A cor do texto em formato RGB (ex: (255, 0, 0) para vermelho). Padrão é None.
     """
     paragraph = doc.add_paragraph(style=estilo)
-    run = paragraph.add_run(texto)
-    if cor is not None and len(cor) == 3:
-        run.font.color.rgb = RGBColor(cor[0], cor[1], cor[2])
-    run.font.name = font_name
-    run.font.size = Pt(tamanho_fonte)
-    run.bold = bold
+    if isinstance(bold, list):
+        texto_temp = texto
+        for palavra in bold:
+            partes = texto_temp.split(palavra, 1)
+            if partes[0]:
+                run = paragraph.add_run(partes[0])
+                run.font.name = font_name
+                run.font.size = Pt(tamanho_fonte)
+                if cor is not None and len(cor) == 3:
+                    run.font.color.rgb = RGBColor(cor[0], cor[1], cor[2])
+            run_bold = paragraph.add_run(palavra)
+            run_bold.font.name = font_name
+            run_bold.font.size = Pt(tamanho_fonte)
+            run_bold.bold = True
+            if cor is not None and len(cor) == 3:
+                run_bold.font.color.rgb = RGBColor(cor[0], cor[1], cor[2])
+            texto_temp = partes[1] if len(partes) > 1 else ""
+        if texto_temp:
+            run = paragraph.add_run(texto_temp)
+            run.font.name = font_name
+            run.font.size = Pt(tamanho_fonte)
+            if cor is not None and len(cor) == 3:
+                run.font.color.rgb = RGBColor(cor[0], cor[1], cor[2])
+    else:
+        run = paragraph.add_run(texto)
+        if cor is not None and len(cor) == 3:
+            run.font.color.rgb = RGBColor(cor[0], cor[1], cor[2])
+        run.font.name = font_name
+        run.font.size = Pt(tamanho_fonte)
+        run.bold = bold
     paragraph.alignment = alinhamento
     paragraph.paragraph_format.space_before = Pt(espaco_antes)
     paragraph.paragraph_format.space_after = Pt(espaco_depois)
-    
     return paragraph
 
 def adicionar_tabela(doc, dados, cabecalho=None, largura_colunas=None, estilo_tabela='Table Grid', 

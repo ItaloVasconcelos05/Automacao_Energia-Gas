@@ -9,6 +9,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sys
 import os
 from sections.introduction.introduction import gerar_secao_introducao
+from sections.objectives.objectives import gerar_secao_objetivos
 from sections.legalbasis.legalbasis import gerar_secao_fundamentacao_legal
 from sections.nonconformity.nonconformity import (gerar_secao_nao_conformidades_constatadas,)
 from sections.nonconformityresume.nonconformityresume import (gerar_secao_resumo_nao_conformidades,)
@@ -66,7 +67,11 @@ def gerar_relatorio():
         doc.add_section(WD_SECTION.NEW_PAGE)
 
         gerar_secao_introducao(doc, row, BASE_DIR)
+<<<<<<< HEAD
         
+=======
+        gerar_secao_objetivos(doc)
+>>>>>>> 6f6eba5994234751fff6f3aa806da66c4d28a03c
         gerar_secao_fundamentacao_legal(doc)
         
         gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
@@ -80,7 +85,14 @@ def gerar_relatorio():
         caminho_pdf = os.path.join(RELATORIOS_DIR, f"{nome_arquivo}.pdf")
 
         doc.save(caminho_docx)
-        convert(caminho_docx, caminho_pdf)
+        # Garante sobrescrita limpa do PDF e captura erros de conversão
+        try:
+            if os.path.exists(caminho_pdf):
+                os.remove(caminho_pdf)
+            convert(caminho_docx, caminho_pdf)
+        except Exception as e:
+            print(f"Erro ao converter para PDF: {e}")
+            print("Verifique se o Microsoft Word está instalado e fechado durante a conversão.")
         # fiscalizacoes_df.at[idx, COLUNA_STATUS] = True
 
     if not arquivo_em_uso(CAMINHO_PLANILHA):
