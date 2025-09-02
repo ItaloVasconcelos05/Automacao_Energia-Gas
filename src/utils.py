@@ -1,27 +1,8 @@
-# Adiciona importação necessária para WD_ALIGN_PARAGRAPH
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-# Função para adicionar parágrafo com marcador, título em negrito e texto normal
-def adicionar_paragrafo_bullet_bold(doc, titulo, texto, tamanho_fonte=12, font_name='Calibri', alinhamento=WD_ALIGN_PARAGRAPH.JUSTIFY, espaco_antes=0, espaco_depois=0):
-    paragraph = doc.add_paragraph(style='List Bullet')
-    run_titulo = paragraph.add_run(titulo)
-    run_titulo.bold = True
-    run_titulo.font.size = Pt(tamanho_fonte)
-    run_titulo.font.name = font_name
-    run_texto = paragraph.add_run(f" {texto}")
-    run_texto.bold = False
-    run_texto.font.size = Pt(tamanho_fonte)
-    run_texto.font.name = font_name
-    paragraph.alignment = alinhamento
-    paragraph.paragraph_format.space_before = Pt(espaco_antes)
-    paragraph.paragraph_format.space_after = Pt(espaco_depois)
-    return paragraph
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ALIGN_VERTICAL
 from openpyxl import load_workbook
 import os
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 from PIL import Image
 import io
@@ -223,53 +204,3 @@ def arquivo_em_uso(caminho):
         return False
     except PermissionError:
         return True
-
-
-def aplicar_estilo_texto(
-    run, tamanho=12, negrito=False, fonte="Arial", cor_rgb=(0, 0, 0)
-):
-    run.font.name = fonte
-    run._element.rPr.rFonts.set(qn("w:eastAsia"), fonte)
-    run.font.size = Pt(tamanho)
-    run.bold = negrito
-    run.font.color.rgb = RGBColor(*cor_rgb)
-
-
-def aplicar_borda_paragrafo(paragraph):
-    p = paragraph._element
-    pPr = p.get_or_add_pPr()
-    borders = OxmlElement("w:pBdr")
-    for border_name in ("top", "left", "bottom", "right"):
-        border = OxmlElement(f"w:{border_name}")
-        border.set(qn("w:val"), "single")
-        border.set(qn("w:sz"), "4")
-        border.set(qn("w:space"), "2")
-        border.set(qn("w:color"), "000000")
-        borders.append(border)
-    pPr.append(borders)
-
-
-def adicionar_legenda_formatada(doc, texto):
-    par = doc.add_paragraph()
-    run = par.add_run(texto)
-    aplicar_estilo_texto(run, tamanho=10, fonte="Arial", cor_rgb=(90, 90, 90))
-    par.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    aplicar_borda_paragrafo(par)
-
-
-def processar_imagem_para_relatorio(caminho_imagem, largura_max=1024, qualidade=80):
-    # Abre a imagem
-    img = Image.open(caminho_imagem)
-    # Converte para RGB se necessário (evita problemas com PNG/transparência)
-    if img.mode != "RGB":
-        img = img.convert("RGB")
-    # Redimensiona mantendo proporção
-    if img.width > largura_max:
-        proporcao = largura_max / float(img.width)
-        altura_nova = int(float(img.height) * proporcao)
-        img = img.resize((largura_max, altura_nova), Image.LANCZOS)
-    # Salva em memória, sem metadados, com compressão JPEG
-    buffer = io.BytesIO()
-    img.save(buffer, format="JPEG", quality=qualidade, optimize=True)
-    buffer.seek(0)
-    return buffer
