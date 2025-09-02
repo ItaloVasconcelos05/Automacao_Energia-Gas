@@ -67,11 +67,7 @@ def gerar_relatorio():
         doc.add_section(WD_SECTION.NEW_PAGE)
 
         gerar_secao_introducao(doc, row, BASE_DIR)
-<<<<<<< HEAD
-        
-=======
         gerar_secao_objetivos(doc)
->>>>>>> 6f6eba5994234751fff6f3aa806da66c4d28a03c
         gerar_secao_fundamentacao_legal(doc)
         
         gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
