@@ -11,6 +11,7 @@ import os
 from sections.introduction.introduction import gerar_secao_introducao
 from sections.objectives.objectives import gerar_secao_objetivos
 from sections.legalbasis.legalbasis import gerar_secao_fundamentacao_legal
+from sections.fiscalizacao.fiscalizacao import gerar_secao_fiscalizacoes
 from sections.nonconformity.nonconformity import (gerar_secao_nao_conformidades_constatadas,)
 from sections.nonconformityresume.nonconformityresume import (gerar_secao_resumo_nao_conformidades,)
 from sections.finalconsiderations.finalconsiderations import (gerar_secao_consideracoes_finais,)
@@ -69,7 +70,7 @@ def gerar_relatorio():
         gerar_secao_introducao(doc, row, BASE_DIR)
         gerar_secao_objetivos(doc)
         gerar_secao_fundamentacao_legal(doc)
-        
+        gerar_secao_fiscalizacoes(doc, row, BASE_DIR)
         gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
         
         gerar_secao_resumo_nao_conformidades(doc, row, nao_conformidades_df)
