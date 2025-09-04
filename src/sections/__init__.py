@@ -1,0 +1,9 @@
+# src/sections/__init__.py
+
+from .finalconsiderations import gerar_secao_consideracoes_finais
+from .introduction import gerar_secao_introducao
+from .legalbasis import gerar_secao_fundamentacao_legal
+from .nonconformity import gerar_secao_nao_conformidades_constatadas
+from .nonconformityresume import gerar_secao_resumo_nao_conformidades
+from .objectives import gerar_secao_objetivos
+from .tittle import gerar_titulo
