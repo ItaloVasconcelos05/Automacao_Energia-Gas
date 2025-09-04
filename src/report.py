@@ -8,13 +8,15 @@ from docx.enum.section import WD_SECTION
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import sys
 import os
-from sections.introduction.introduction import gerar_secao_introducao
-from sections.objectives.objectives import gerar_secao_objetivos
-from sections.legalbasis.legalbasis import gerar_secao_fundamentacao_legal
-from sections.nonconformity.nonconformity import (gerar_secao_nao_conformidades_constatadas,)
-from sections.nonconformityresume.nonconformityresume import (gerar_secao_resumo_nao_conformidades,)
-from sections.finalconsiderations.finalconsiderations import (gerar_secao_consideracoes_finais,)
-from sections.tittle.tittle import gerar_titulo
+from sections import (
+    gerar_secao_consideracoes_finais,
+    gerar_secao_introducao,
+    gerar_secao_fundamentacao_legal,
+    gerar_secao_nao_conformidades_constatadas,
+    gerar_secao_resumo_nao_conformidades,
+    gerar_secao_objetivos,
+    gerar_titulo,
+)
 from utils import (adicionar_paragrafo,ajustar_largura_colunas,arquivo_em_uso,)
 
 Inches
@@ -65,11 +67,9 @@ def gerar_relatorio():
         doc = Document()
         gerar_titulo(doc, BASE_DIR)
         doc.add_section(WD_SECTION.NEW_PAGE)
-
         gerar_secao_introducao(doc, row, BASE_DIR)
         gerar_secao_objetivos(doc)
         gerar_secao_fundamentacao_legal(doc)
-        
         gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
         
         gerar_secao_resumo_nao_conformidades(doc, row, nao_conformidades_df)
