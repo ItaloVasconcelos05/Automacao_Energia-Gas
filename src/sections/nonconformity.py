@@ -27,10 +27,10 @@ def gerar_secao_nao_conformidades_constatadas(
         "A seguir, apresentam-se as não conformidades registradas nos diversos terminais fiscalizados:",
     )
 
-    id_fisc = row["ID da Fiscalização"]
+    id_fisc = row["ID_FISC"]
 
     nc_fisc = nao_conformidades_df[
-        nao_conformidades_df["ID da Fiscalização"] == id_fisc
+        nao_conformidades_df["ID_FISC_original"] == id_fisc
     ]
 
     if "Terminal" not in nc_fisc.columns:
@@ -85,7 +85,7 @@ def gerar_secao_nao_conformidades_constatadas(
 
         # 🔽 OBSERVAÇÕES IMPORTANTES PARA O TERMINAL
         obs_terminais = observacoes_df[
-            (observacoes_df["ID da Fiscalização"] == id_fisc)
+            (observacoes_df["ID_FISC"] == id_fisc)
             & (observacoes_df["Terminal"] == terminal)
         ]
 

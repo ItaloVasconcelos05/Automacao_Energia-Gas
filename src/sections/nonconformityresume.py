@@ -21,10 +21,10 @@ def gerar_secao_resumo_nao_conformidades(doc, row, nao_conformidades_df):
 
     adicionar_titulo_secao(doc, "4. RESUMO DAS NÃO CONFORMIDADES IDENTIFICADAS")
 
-    id_fisc = row["ID da Fiscalização"]
+    id_fisc = row["ID_FISC"]
 
     nc_fisc = nao_conformidades_df[
-        nao_conformidades_df["ID da Fiscalização"] == id_fisc
+        nao_conformidades_df["ID_FISC_original"] == id_fisc
     ]
 
     if nc_fisc.empty:

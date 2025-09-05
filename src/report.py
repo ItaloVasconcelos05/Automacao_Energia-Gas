@@ -12,6 +12,7 @@ from sections import (
     gerar_secao_consideracoes_finais,
     gerar_secao_introducao,
     gerar_secao_fundamentacao_legal,
+    gerar_secao_fiscalizacao,
     gerar_secao_nao_conformidades_constatadas,
     gerar_secao_resumo_nao_conformidades,
     gerar_secao_objetivos,
@@ -29,7 +30,7 @@ def gerar_relatorio():
 
     FOTOS_DIR = os.path.join(BASE_DIR, "assets")
     RELATORIOS_DIR = os.path.join(BASE_DIR, "reports")
-    CAMINHO_PLANILHA = os.path.join(BASE_DIR, "planilha_fiscalizacao.xlsx")
+    CAMINHO_PLANILHA = os.path.join(BASE_DIR, "assets","Acompanhamento_fiscaliz_2025.xlsx")
     COLUNA_STATUS = "Relatório Gerado"
 
     os.makedirs(RELATORIOS_DIR, exist_ok=True)
@@ -39,14 +40,15 @@ def gerar_relatorio():
         print("⚠️ A planilha está em uso. Feche-a antes de executar o script.")
         exit(1)
 
-    fiscalizacoes_df = pd.read_excel(CAMINHO_PLANILHA, sheet_name="Fiscalizações")
+    fiscalizacoes_df = pd.read_excel(CAMINHO_PLANILHA, sheet_name="Fiscalizacoes")
     nao_conformidades_df = pd.read_excel(
-        CAMINHO_PLANILHA, sheet_name="Não-conformidades "
+        CAMINHO_PLANILHA, sheet_name="Nao_Conformidades"
     )
 
-    observacoes_df = pd.read_excel(
-        CAMINHO_PLANILHA, sheet_name="Observações Importantes"
-    )
+    # observacoes_df = pd.read_excel(
+    #     CAMINHO_PLANILHA, sheet_name="Observações Importantes"
+    # )
+    observacoes_df = pd.DataFrame()  # DataFrame vazio se a aba não existir
 
     if COLUNA_STATUS not in fiscalizacoes_df.columns:
         fiscalizacoes_df[COLUNA_STATUS] = False
@@ -60,16 +62,20 @@ def gerar_relatorio():
         print("✅ Nenhum relatório pendente.")
         return
 
-    for idx in tqdm(pendentes.index, desc="Gerando relatórios"):
+    # Processa apenas o primeiro registro pendente
+    if len(pendentes) > 0:
+        idx = pendentes.index[0]  # Pega apenas o primeiro
         row = fiscalizacoes_df.loc[idx]
-        id_fisc = row["ID da Fiscalização"]
-        # fiscalizacoes_df.at[idx, COLUNA_STATUS] = True  # Comentado para manter o status como False após gerar o relatório
+        id_fisc = row["ID_FISC"]
+        print(f"Gerando relatório para ID: {id_fisc}")
+        fiscalizacoes_df.at[idx, COLUNA_STATUS] = True  # Marca como processado
         doc = Document()
         gerar_titulo(doc, BASE_DIR)
         doc.add_section(WD_SECTION.NEW_PAGE)
         gerar_secao_introducao(doc, row, BASE_DIR)
         gerar_secao_objetivos(doc)
         gerar_secao_fundamentacao_legal(doc)
+        gerar_secao_fiscalizacoes(doc, row, BASE_DIR)
         gerar_secao_nao_conformidades_constatadas(doc, row, nao_conformidades_df, FOTOS_DIR, observacoes_df)
         
         gerar_secao_resumo_nao_conformidades(doc, row, nao_conformidades_df)
@@ -86,19 +92,19 @@ def gerar_relatorio():
             if os.path.exists(caminho_pdf):
                 os.remove(caminho_pdf)
             convert(caminho_docx, caminho_pdf)
+            print(f"✅ Relatório gerado: {caminho_docx}")
         except Exception as e:
             print(f"Erro ao converter para PDF: {e}")
             print("Verifique se o Microsoft Word está instalado e fechado durante a conversão.")
-        # fiscalizacoes_df.at[idx, COLUNA_STATUS] = True
 
     if not arquivo_em_uso(CAMINHO_PLANILHA):
         with pd.ExcelWriter(
             CAMINHO_PLANILHA, engine="openpyxl", mode="a", if_sheet_exists="replace"
         ) as writer:
             # Substitui somente as abas que foram manipuladas
-            fiscalizacoes_df.to_excel(writer, sheet_name="Fiscalizações", index=False)
+            fiscalizacoes_df.to_excel(writer, sheet_name="Fiscalizacoes", index=False)
             nao_conformidades_df.to_excel(
-                writer, sheet_name="Não-conformidades ", index=False
+                writer, sheet_name="Nao_Conformidades", index=False
             )
         ajustar_largura_colunas(CAMINHO_PLANILHA)
 

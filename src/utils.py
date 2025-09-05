@@ -204,3 +204,12 @@ def arquivo_em_uso(caminho):
         return False
     except PermissionError:
         return True
+
+def aplicar_borda_paragrafo():
+    pass  # Implementação futura, se necessário
+   
+def adicionar_legenda_formatada():
+    pass
+
+def processar_imagem_para_relatorio():
+    pass

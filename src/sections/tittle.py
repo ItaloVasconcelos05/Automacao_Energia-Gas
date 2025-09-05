@@ -8,13 +8,15 @@ def gerar_titulo(doc, BASE_DIR):
     Gera a página de título do relatório.
     """
     
-    # Adiciona o cabeçalho e os títulos principais
-    adicionar_imagem_no_cabecalho(
-        doc,
-        os.path.join(BASE_DIR, "assets/logo_arpe.png"),
-        largura=Inches(2),
-        alinhamento=WD_PARAGRAPH_ALIGNMENT.CENTER
-    )
+    # Adiciona o cabeçalho e os títulos principais (se a imagem existir)
+    logo_path = os.path.join(BASE_DIR, "assets/logo_arpe.png")
+    if os.path.exists(logo_path):
+        adicionar_imagem_no_cabecalho(
+            doc,
+            logo_path,
+            largura=Inches(2),
+            alinhamento=WD_PARAGRAPH_ALIGNMENT.CENTER
+        )
     
     adicionar_paragrafo(
         doc,
@@ -38,9 +40,11 @@ def gerar_titulo(doc, BASE_DIR):
         cor=(0, 0, 0)
     )
     
-    # Adiciona a imagem principal e centraliza
-    doc.add_picture(os.path.join(BASE_DIR, "assets/gas.png"), width=Inches(6))
-    doc.paragraphs[-1].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    # Adiciona a imagem principal e centraliza (se existir)
+    gas_path = os.path.join(BASE_DIR, "assets/gas.png")
+    if os.path.exists(gas_path):
+        doc.add_picture(gas_path, width=Inches(6))
+        doc.paragraphs[-1].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     
     # Adiciona o título do relatório
     adicionar_paragrafo(
@@ -59,7 +63,6 @@ def gerar_titulo(doc, BASE_DIR):
         "Argemiro Rivas",
         "Marta Rejane",
         "João Paulo Costa",
-        "Alexandre Almeida",
         "ABRIL/2025"
     ]
     
