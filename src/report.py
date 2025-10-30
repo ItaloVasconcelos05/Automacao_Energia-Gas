@@ -83,7 +83,7 @@ def gerar_relatorio():
         doc.save(caminho_docx)
         # Garante sobrescrita limpa do PDF e captura erros de conversão
         try:
-            if os.path.exists(caminho_pdf):
+            if os.path.exists(caminho_pdf): 
                 os.remove(caminho_pdf)
             convert(caminho_docx, caminho_pdf)
         except Exception as e:

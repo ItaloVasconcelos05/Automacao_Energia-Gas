@@ -6,9 +6,6 @@ import pandas as pd
 from utils import (
     adicionar_paragrafo,
     adicionar_titulo_secao,
-    aplicar_borda_paragrafo,
-    adicionar_legenda_formatada,
-    processar_imagem_para_relatorio,
 )
 
 

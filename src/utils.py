@@ -10,6 +10,22 @@ from typing import Literal
 
 ESTILOS_COMUNS = Literal['Normal', 'Heading 1', 'Heading 2', 'Heading 3', 'List Bullet', 'List Number', 'Title', 'Subtitle', 'Quote', 'Caption', 'Body Text', 'Footnote Text', 'Endnote Text', 'Table Grid', 'Hyperlink']
 
+# Função Automação para Argemiro
+
+numero = 1
+numero_2 = 5
+
+print(numero + numero_2)
+
+match (argemiro):
+    case "hetero":
+
+if argemiro == "hetero"{
+    System.out.println("")
+    argemiro_2025 = "Argemiro Rivas"
+    java = "Python"
+    concatenacao = argemiro_2025 + java
+    }
 # Funções auxiliares de formatação:
 def adicionar_paragrafo(doc, texto, 
                         tamanho_fonte=12, 

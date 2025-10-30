@@ -5,7 +5,7 @@ def main():
     gerar_relatorio()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     try:
         main()
     finally:
